@@ -1,6 +1,7 @@
 package com.example.promechbackend.controller;
 
 import com.example.promechbackend.dto.Ticket;
+import com.example.promechbackend.dto.TicketForm;
 import com.example.promechbackend.entity.TicketEntity;
 import com.example.promechbackend.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -26,17 +28,24 @@ public class TicketController {
         return ticketService.getAll();
     }
 
-    @PostMapping("/CreateTicket")
-    public ResponseEntity<?> createTicket(@ModelAttribute Ticket ticket) {
-        try {
-            Integer result = ticketService.createTicket(ticket);
-            if (result == 1)
-                return ResponseEntity.ok(HttpStatus.OK);
-            else
-                return ResponseEntity.status(503).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(501).body(null);
-        }
+
+    @RequestMapping(value="/CreateTicket", method=RequestMethod.POST,produces="application/json")
+    public @ResponseBody TicketForm updateServiceType(@RequestBody TicketForm request, final HttpServletResponse response){
+    //public ResponseEntity<?> createTicket(HttpServletRequest request) {
+        System.out.println(request);
+        return request;
+
+
+        //        try {
+//            System.out.println(ticket);
+//            Integer result = ticketService.createTicket(ticket);
+//            if (result == 1)
+//                return ResponseEntity.ok(HttpStatus.OK);
+//            else
+//                return ResponseEntity.status(503).body(null);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(501).body(null);
+//        }
 
     }
 
