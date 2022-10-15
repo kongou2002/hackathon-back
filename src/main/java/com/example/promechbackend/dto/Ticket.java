@@ -4,6 +4,7 @@ package com.example.promechbackend.dto;
 import lombok.*;
 
 import javax.persistence.Column;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,8 +16,6 @@ public class Ticket {
     private int phone;
     private String name;
     private String password;
-
     private String description;
-
-    private String service;
+    private List<String> service;
 }
