@@ -1,6 +1,5 @@
 package com.example.promechbackend.controller;
 
-import com.example.promechbackend.dto.Service;
 import com.example.promechbackend.entity.ServiceEntity;
 import com.example.promechbackend.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ public class ServiceController {
     @Autowired
     ServiceService serviceService;
     @GetMapping("/ALL")
-    List<Service> getAll(){
+    List<ServiceEntity> getAll(){
         return serviceService.getAll();
     }
 }

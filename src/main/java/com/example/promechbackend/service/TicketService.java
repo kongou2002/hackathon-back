@@ -13,6 +13,92 @@ public class TicketService {
     @Autowired
     TicketRepository ticketRepository;
 
+    private Ticket convert(String body){
+        Ticket t = new Ticket();
+        int start = 0, end = 0, i=0;
+        i = body.indexOf("name");
+        i++;
+        while(i<body.length() && body.charAt(i)!='"') i++;
+        int temp=i;
+        i++;
+        while(i<body.length() && body.charAt(i)!='"') i++;
+        if(i-temp > 2) {
+            t.setName(null);
+        }
+        else {
+            i++;
+            int j=i;
+            while(i<body.length() && body.charAt(i)!='"') i++;
+            t.setName(body.substring(j,i));
+        }
+
+
+        i = body.indexOf("password");
+        i++;
+        while(i<body.length() && body.charAt(i)!='"') i++;
+        temp=i;
+        i++;
+        while(i<body.length() && body.charAt(i)!='"') i++;
+        if(i-temp > 2) {
+            t.setPassword(null);
+        }
+        else {
+            i++;
+            int j=i;
+            while(i<body.length() && body.charAt(i)!='"') i++;
+            t.setPassword(body.substring(j,i));
+        }
+
+
+        i = body.indexOf("phone");
+        i++;
+        while(i<body.length() && body.charAt(i)!='"') i++;
+        temp=i;
+        i++;
+        while(i<body.length() && body.charAt(i)!='"') i++;
+        if(i-temp > 2) {
+            t.setPhone(-1);
+        }
+        else {
+            i++;
+            int j=i;
+            while(i<body.length() && body.charAt(i)!='"') i++;
+            t.setPhone(Integer.parseInt(body.substring(j,i)));
+        }
+
+
+        i = body.indexOf("description");
+        i++;
+        while(i<body.length() && body.charAt(i)!='"') i++;
+        temp=i;
+        i++;
+        while(i<body.length() && body.charAt(i)!='"') i++;
+        if(i-temp > 2) {
+            t.setDescription(null);
+        }
+        else {
+            i++;
+            int j=i;
+            while(i<body.length() && body.charAt(i)!='"') i++;
+            t.setDescription(body.substring(j,i));
+        }
+
+//        service
+        start = body.indexOf("service")+11;
+        end = 0;
+        i=0;
+        String service = "";
+        while (body.indexOf('"', start)!=-1){
+            end =body.indexOf('"', start);
+            if (i%2==0)
+                service+= body.substring(start, end) + ", ";
+            i++;
+            start = end+1;
+        }
+        t.setService(service.substring(0, service.length()-2));
+        return t;
+    }
+
     public TicketEntity getTicketByPhone(int phone) {
         return ticketRepository.getByPhone(phone);
     }
@@ -21,27 +107,98 @@ public class TicketService {
         return ticketRepository.getAll();
     }
 
+    public Integer createTicket(String body){
+        Ticket ticket = this.convert(body);
+        return ticketRepository.createTicket(ticket.getPhone(), ticket.getName(), ticket.getPassword(), ticket.getDescription(), ticket.getService());
+    }
+
     public Integer createTicket(Ticket ticket) {
-        String service = ticket.getService();
-//        for (String s :
-//                ticket.getService()) {
-//            service+=s.substring(2, s.length()-2) + ", ";
-//        }
-//        service = service.substring(0, service.length()-2);
-        return ticketRepository.createTicket(ticket.getPhone(), ticket.getName(), ticket.getPassword(), ticket.getDescription(), service);
+        return ticketRepository.createTicket(ticket.getPhone(), ticket.getName(), ticket.getPassword(), ticket.getDescription(), ticket.getService());
     }
 
     public Integer updateTicket(Ticket ticket) {
-        String service = ticket.getService();
-//        for (String s :
-//                ticket.getService()) {
-//            service+=s.substring(2, s.length()-2) + ", ";
-//        }
-//        service = service.substring(0, service.length()-2);
-        return ticketRepository.updateTicket(ticket.getTicketID(), ticket.getPhone(), ticket.getName(), ticket.getPassword(), ticket.getDescription(), service);
+        return ticketRepository.updateTicket(ticket.getTicketID(), ticket.getPhone(), ticket.getName(), ticket.getPassword(), ticket.getDescription(), ticket.getService());
     }
 
     public Integer confirmTicket(Ticket ticket) {
         return ticketRepository.confirmTicket(ticket.getTicketID());
+    }
+
+    public void getString (String body){
+        System.out.println(body + "\n");
+        int i;
+        Ticket t = new Ticket();
+
+            i = body.indexOf("name");
+            i++;
+            while(i<body.length() && body.charAt(i)!='"') i++;
+            int temp=i;
+            i++;
+            while(i<body.length() && body.charAt(i)!='"') i++;
+            if(i-temp > 2) {
+                System.out.println("null");
+            }
+            else {
+                i++;
+                int j=i;
+                while(i<body.length() && body.charAt(i)!='"') i++;
+                System.out.println(body.substring(j,i));
+                t.setName(body.substring(j,i));
+            }
+
+
+            i = body.indexOf("password");
+            i++;
+            while(i<body.length() && body.charAt(i)!='"') i++;
+            temp=i;
+            i++;
+            while(i<body.length() && body.charAt(i)!='"') i++;
+            if(i-temp > 2) {
+                System.out.println("null");
+            }
+            else {
+                i++;
+                int j=i;
+                while(i<body.length() && body.charAt(i)!='"') i++;
+                System.out.println(body.substring(j,i));
+                t.setPassword(body.substring(j,i));
+            }
+
+
+            i = body.indexOf("phone");
+            i++;
+            while(i<body.length() && body.charAt(i)!='"') i++;
+            temp=i;
+            i++;
+            while(i<body.length() && body.charAt(i)!='"') i++;
+            if(i-temp > 2) {
+                System.out.println("null");
+            }
+            else {
+                i++;
+                int j=i;
+                while(i<body.length() && body.charAt(i)!='"') i++;
+                System.out.println(body.substring(j,i));
+                t.setPhone(Integer.parseInt(body.substring(j,i)));
+            }
+
+
+            i = body.indexOf("description");
+            i++;
+            while(i<body.length() && body.charAt(i)!='"') i++;
+            temp=i;
+            i++;
+            while(i<body.length() && body.charAt(i)!='"') i++;
+            if(i-temp > 2) {
+                System.out.println("null");
+            }
+            else {
+                i++;
+                int j=i;
+                while(i<body.length() && body.charAt(i)!='"') i++;
+                System.out.println(body.substring(j,i));
+                t.setDescription(body.substring(j,i));
+            }
+
     }
 }
