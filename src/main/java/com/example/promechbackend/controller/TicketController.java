@@ -15,32 +15,42 @@ import java.util.List;
 public class TicketController {
     @Autowired
     TicketService ticketService;
+
     @GetMapping("/{phone}")
-    public TicketEntity getTicketByPhone(@PathVariable int phone){
+    public TicketEntity getTicketByPhone(@PathVariable int phone) {
         return ticketService.getTicketByPhone(phone);
     }
 
     @GetMapping("/ALL")
-    public List<TicketEntity> getTicketByPhone(){
+    public List<TicketEntity> getTicketByPhone() {
         return ticketService.getAll();
     }
 
     @PostMapping("/CreateTicket")
     public ResponseEntity<?> createTicket(@ModelAttribute Ticket ticket) {
-        Integer result = ticketService.createTicket(ticket);
-        if (result == 1)
-            return ResponseEntity.ok(HttpStatus.OK);
-        else
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
+        try {
+            Integer result = ticketService.createTicket(ticket);
+            if (result == 1)
+                return ResponseEntity.ok(HttpStatus.OK);
+            else
+                return ResponseEntity.status(503).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(501).body(null);
+        }
+
     }
 
     @PutMapping("/UpdateTicket")
     public ResponseEntity<?> updateJO(@ModelAttribute Ticket ticket) {
-        Integer result = ticketService.updateTicket(ticket);
-        if (result == 1)
-            return ResponseEntity.ok(HttpStatus.OK);
-        else
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
+        try {
+            Integer result = ticketService.updateTicket(ticket);
+            if (result == 1)
+                return ResponseEntity.ok(HttpStatus.OK);
+            else
+                return ResponseEntity.status(503).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(501).body(null);
+        }
     }
 
     @DeleteMapping("/ConfirmTicket")
